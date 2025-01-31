@@ -1,0 +1,23 @@
+# permissions for end users to view contactpoints.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: habr-k8s-resource-tracker
+    app.kubernetes.io/managed-by: kustomize
+  name: contactpoint-viewer-role
+rules:
+- apiGroups:
+  - tg.azamaton.ru
+  resources:
+  - contactpoints
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - tg.azamaton.ru
+  resources:
+  - contactpoints/status
+  verbs:
+  - get

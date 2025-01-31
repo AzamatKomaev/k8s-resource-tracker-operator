@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- tg_v1_contactpoint.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples
