@@ -20,22 +20,37 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+type ContactPointType string
 
-// ContactPointSpec defines the desired state of ContactPoint.
-type ContactPointSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+const (
+	TelegramType ContactPointType = "Telegram"
+	WebhookType  ContactPointType = "Webhook"
+)
 
-	// Foo is an example field of ContactPoint. Edit contactpoint_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+type ContactPointTelegramSpec struct {
+	ChatId int `json:"chatId"`
 }
 
-// ContactPointStatus defines the observed state of ContactPoint.
+type ContactPointWebhookSpec struct {
+	Url        string `json:"url"`
+	HeaderName string `json:"headerName"`
+}
+
+type ContactPointApiToken struct {
+	SecretName string `json:"secretName"`
+	Key        string `json:"key"`
+}
+
+type ContactPointSpec struct {
+	Type         ContactPointType         `json:"type"`
+	ApiToken     ContactPointApiToken     `json:"apiToken"`
+	WebhookSpec  ContactPointWebhookSpec  `json:"webhookSpec,omitempty"`
+	TelegramSpec ContactPointTelegramSpec `json:"telegramSpec,omitempty"`
+}
+
 type ContactPointStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	Initialized bool `json:"initialized"`
+	Ready       bool `json:"ready"`
 }
 
 // +kubebuilder:object:root=true
