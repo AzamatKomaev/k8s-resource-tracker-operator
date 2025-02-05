@@ -4,6 +4,12 @@ metadata:
   labels:
     app.kubernetes.io/name: habr-k8s-resource-tracker
     app.kubernetes.io/managed-by: kustomize
-  name: contactpoint-sample
+  name: telegram-cp
+  namespace: default
 spec:
-  # TODO(user): Add fields here
+  type: Telegram
+  telegramSpec:
+    chatId: 12345678
+  apiToken:
+    secretName: telegram-cp-token
+    key: token
