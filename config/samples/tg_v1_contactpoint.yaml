@@ -9,7 +9,7 @@ metadata:
 spec:
   type: Telegram
   telegramSpec:
-    chatId: 12345678
+    chatId: 721412563
   apiToken:
     secretName: telegram-cp-token
     key: token

@@ -18,7 +18,10 @@ package controller
 
 import (
 	"context"
+	"github.com/AzamatKomaev/k8s-resource-tracker-operator/internal/alert"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -47,8 +50,38 @@ func (r *ContactPointReconciler) Reconcile(ctx context.Context, req ctrl.Request
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	log.V(1).Info("Namespace: " + contactPoint.Namespace)
-	log.V(1).Info("Type: " + string(contactPoint.Spec.Type))
+	var secretWithAPIToken v1.Secret
+
+	targetSecretLocation := types.NamespacedName{
+		Name:      contactPoint.Spec.ApiToken.SecretName,
+		Namespace: "habr-k8s-resource-tracker-system",
+	}
+
+	if err := r.Get(ctx, targetSecretLocation, &secretWithAPIToken); err != nil {
+		log.Error(err, "unable to get secret with api token by spec")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	if !contactPoint.Status.Ready {
+		var contactPointService alert.ContactPoint
+
+		contactPointService = alert.GetContactPointByType(contactPoint,
+			string(secretWithAPIToken.Data[contactPoint.Spec.ApiToken.Key]))
+
+		_, err := contactPointService.SendAlert("Contact point is ready")
+
+		if err != nil {
+			contactPoint.Status = tgv1.ContactPointStatus{Ready: true, Initialized: true}
+		} else {
+			contactPoint.Status = tgv1.ContactPointStatus{Ready: false, Initialized: true}
+			log.Error(err, "send alert return error: "+err.Error())
+		}
+	}
+
+	if err := r.Status().Update(ctx, &contactPoint); err != nil {
+		log.Error(err, "unable to update ContactPoint status")
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }
