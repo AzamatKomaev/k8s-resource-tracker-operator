@@ -8,14 +8,36 @@ rules:
   - ""
   resources:
   - secrets
+  - services
   verbs:
   - get
   - list
   - watch
 - apiGroups:
+  - ""
+  resources:
+  - services/status
+  verbs:
+  - get
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - deployments/status
+  verbs:
+  - get
+- apiGroups:
   - tg.azamaton.ru
   resources:
   - contactpoints
+  - trackedfields
   verbs:
   - create
   - delete
@@ -28,12 +50,14 @@ rules:
   - tg.azamaton.ru
   resources:
   - contactpoints/finalizers
+  - trackedfields/finalizers
   verbs:
   - update
 - apiGroups:
   - tg.azamaton.ru
   resources:
   - contactpoints/status
+  - trackedfields/status
   verbs:
   - get
   - patch

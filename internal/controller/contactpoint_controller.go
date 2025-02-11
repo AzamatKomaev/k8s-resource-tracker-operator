@@ -71,10 +71,10 @@ func (r *ContactPointReconciler) Reconcile(ctx context.Context, req ctrl.Request
 		_, err := contactPointService.SendAlert("Contact point is ready")
 
 		if err != nil {
-			contactPoint.Status = tgv1.ContactPointStatus{Ready: true, Initialized: true}
-		} else {
 			contactPoint.Status = tgv1.ContactPointStatus{Ready: false, Initialized: true}
 			log.Error(err, "send alert return error: "+err.Error())
+		} else {
+			contactPoint.Status = tgv1.ContactPointStatus{Ready: true, Initialized: true}
 		}
 	}
 

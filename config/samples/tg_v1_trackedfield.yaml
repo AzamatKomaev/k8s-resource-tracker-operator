@@ -1,0 +1,14 @@
+apiVersion: tg.azamaton.ru/v1
+kind: TrackedField
+metadata:
+  labels:
+    app.kubernetes.io/name: habr-k8s-resource-tracker
+    app.kubernetes.io/managed-by: kustomize
+  name: nginx-deployment-replicas
+spec:
+  contactPoint: telegram-cp
+  field: replicas
+  target:
+    kind: Deployment
+    name: nginx
+    namespace: default

@@ -1,0 +1,81 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.4
+  name: trackedfields.tg.azamaton.ru
+spec:
+  group: tg.azamaton.ru
+  names:
+    kind: TrackedField
+    listKind: TrackedFieldList
+    plural: trackedfields
+    singular: trackedfield
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              contactPoint:
+                type: string
+              field:
+                type: string
+              target:
+                properties:
+                  kind:
+                    type: string
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                required:
+                - kind
+                - name
+                - namespace
+                type: object
+            required:
+            - contactPoint
+            - field
+            - target
+            type: object
+          status:
+            items:
+              properties:
+                action:
+                  type: string
+                time:
+                  format: date-time
+                  type: string
+                value:
+                  type: string
+              required:
+              - action
+              - time
+              type: object
+            type: array
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true

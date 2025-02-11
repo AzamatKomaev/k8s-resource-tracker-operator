@@ -1,0 +1,27 @@
+# permissions for end users to edit trackedfields.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: habr-k8s-resource-tracker
+    app.kubernetes.io/managed-by: kustomize
+  name: trackedfield-editor-role
+rules:
+- apiGroups:
+  - tg.azamaton.ru
+  resources:
+  - trackedfields
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - tg.azamaton.ru
+  resources:
+  - trackedfields/status
+  verbs:
+  - get

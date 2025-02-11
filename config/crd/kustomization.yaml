@@ -3,6 +3,7 @@
 # It should be run by config/default
 resources:
 - bases/tg.azamaton.ru_contactpoints.yaml
+- bases/tg.azamaton.ru_trackedfields.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 
 patches:

@@ -17,4 +17,13 @@ resources:
   kind: ContactPoint
   path: github.com/AzamatKomaev/k8s-resource-tracker-operator/api/v1
   version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: azamaton.ru
+  group: tg
+  kind: TrackedField
+  path: github.com/AzamatKomaev/k8s-resource-tracker-operator/api/v1
+  version: v1
 version: "3"
